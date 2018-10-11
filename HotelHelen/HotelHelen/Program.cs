@@ -189,6 +189,7 @@ namespace HotelHelen
             comando.ExecuteNonQuery();
 
             conexion.Close();
+
             conexion.Open();
 
             cadena = "INSERT INTO RESERVA (CodHabitacion, FechaIn) VALUES ('" + roomNum + "','" + thisDay + "')";
@@ -200,23 +201,24 @@ namespace HotelHelen
         }
         public static void CheckOut()
         {
+            DateTime thisDay = DateTime.Today;
 
-            //string DNI, nameClient, surnameClient;
+            Console.WriteLine("Introduce client´s DNI, please.");
+            string  DNI = Console.ReadLine();
+            conexion.Open();
+            cadena = "SELECT *from CLIENT where DNI LIKE '" + DNI + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader registros = comando.ExecuteReader();
+            conexion.Close();
 
-            //Console.WriteLine("Welcome to Hotel Helen! Please, introduce your data. Enter your DNI.");
-            //DNI = Console.ReadLine();
-            //Console.WriteLine("Enter your Name.");
-            //nameClient = Console.ReadLine();
-            //Console.WriteLine("Enter yout surname.");
-            //surnameClient = Console.ReadLine();
+            conexion.Open();
 
-            //conexion.Open();
+            cadena = "UPDATE RESERVA SET OCUPACION WHERE FechaOut LIKE  '" + thisDay + "'";
+            cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE L ";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
 
-            //cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE  '" + roomNum + "', O ";
-            //comando = new SqlCommand(cadena, conexion);
-            //comando.ExecuteNonQuery();
-
-            //conexion.Close();
+            conexion.Close();
 
         }
     }
