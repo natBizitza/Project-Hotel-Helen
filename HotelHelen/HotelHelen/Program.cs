@@ -90,7 +90,7 @@ namespace HotelHelen
                 Console.WriteLine("Introduce client´s DNI, please.");
                 DNI = Console.ReadLine();
                 conexion.Open();
-                cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
+                cadena = "SELECT *from CLIENT where DNI LIKE '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 SqlDataReader registros = comando.ExecuteReader();
                 IsRegistered = registros.Read();
@@ -162,7 +162,7 @@ namespace HotelHelen
                 Console.WriteLine("Introduce client´s DNI, please.");
                 DNI = Console.ReadLine();
                 conexion.Open();
-                cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
+                cadena = "SELECT *from CLIENT where DNI LIKE '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 SqlDataReader registros = comando.ExecuteReader();
                 IsRegistered = registros.Read();
