@@ -71,7 +71,7 @@ namespace HotelHelen
 
             conexion.Open();
 
-            cadena = "INSERT INTO CLIENTE VALUES ('" + DNI +"','" + nameClient +  "','" + surnameClient  +"')";
+            cadena = "INSERT INTO CLIENT VALUES ('" + DNI +"','" + nameClient +  "','" + surnameClient  +"')";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
@@ -82,28 +82,32 @@ namespace HotelHelen
         public static void EditClient()
         {
             string DNI, nameClient, surnameClient, answer;
-            conexion.Open();
-            bool IsRegistered;
+         
+            bool IsRegistered=false;
 
             do
             {
                 Console.WriteLine("Introduce client´s DNI, please.");
                 DNI = Console.ReadLine();
                 conexion.Open();
-                cadena = "SELECT *from CLIENT where DNI LIKE '" + DNI + "'";
+                cadena = "SELECT * from CLIENT where DNI LIKE '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 SqlDataReader registros = comando.ExecuteReader();
                 IsRegistered = registros.Read();
+                //if (registros.Read())
+                //{
+                //    IsRegistered = true;
+                //}
                 conexion.Close();
+                registros.Close();
             } while (!IsRegistered);
 
             //to check if it´s our client or not
-
             do
             {
-                Console.WriteLine("Existe el registro");
+                Console.WriteLine("What data would you like to edit name or surname (N/S)?");
                 answer = Console.ReadLine();
-            } while (answer.ToLower() != "n" || answer.ToLower() != "s");
+            } while (answer.ToLower()!= "n" && answer.ToLower() != "s");
 
             // if yes, what we want to change 
             if (answer.ToLower() == "n")
@@ -113,9 +117,10 @@ namespace HotelHelen
 
                 conexion.Open();
 
-                cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctName + "'";
+                cadena = "UPDATE CLIENT SET Nombre='" + correctName + "' WHERE DNI LIKE  '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 comando.ExecuteNonQuery();
+                conexion.Close();
             }
             else
             {
@@ -124,7 +129,7 @@ namespace HotelHelen
 
                 conexion.Open();
 
-                cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctSurname + "'";
+                cadena = "UPDATE CLIENT SET Nombre='" + correctSurname + "' WHERE DNI LIKE  '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 comando.ExecuteNonQuery();
             }
@@ -173,7 +178,7 @@ namespace HotelHelen
 
             conexion.Open();
 
-            cadena = "SELECT CodHabitacion WHERE OCUPACION LIKE L ";
+            cadena = "SELECT CodHabitacion WHERE OCUPACION LIKE L";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
             Console.ReadLine();
