@@ -22,6 +22,7 @@ namespace HotelHelen
            
         }
         public static void menu () {
+            const int REGISTER = 1, EDIT = 2, CHECKIN = 3, CHECKOUT = 4, EXIT = 5;
             int num;
             string nameClient, surnameClient;
             do
@@ -37,18 +38,18 @@ namespace HotelHelen
                 if (num == 1 || num == 2 || num == 3 || num == 4)
                     switch (num)
                     {
-                        case 1:
+                        case REGISTER:
                             RegisterClient();
                             break;
-                        case 2:
-                            Console.WriteLine("Introduce client´s DNI, please.");
-                            string DNI = Console.ReadLine();
-                            EditClient(DNI);
+                        case EDIT:
+                            //Console.WriteLine("Introduce client´s DNI, please.");
+                            //string DNI = Console.ReadLine();
+                            EditClient();
                             break;
-                        case 3:
+                        case CHECKIN:
                             CheckIn(DateTime);
                             break;
-                        case 4:
+                        case CHECKOUT:
                             CheckOut(DateTime);
                             break;
                     }
@@ -78,32 +79,51 @@ namespace HotelHelen
 
         }
 
-        public static void EditClient(string DNI)
+        public static void EditClient()
         {
-            string nameClient, surnameClient, answer;
+            string DNI, nameClient, surnameClient, answer;
             conexion.Open();
 
-            //Console.WriteLine("Introduce client´s DNI, please.");
-            //DNI = Console.ReadLine();
+            Console.WriteLine("Introduce client´s DNI, please.");
+            DNI = Console.ReadLine();
             cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             SqlDataReader registros = comando.ExecuteReader();
 
             if (registros.Read())
             {
-                Console.WriteLine("Existe el registro");
+                do
+                {
+                    Console.WriteLine("Existe el registro");
+                    answer = Console.ReadLine();
+                } while (answer.ToLower() != "n" || answer.ToLower() != "s");
 
-                answer = Console.ReadLine();
+
                 if (answer.ToLower() == "n")
                 {
+                    Console.WriteLine("Introduce correct name.");
+                    string correctName = Console.ReadLine();
+
+                    conexion.Open();
+
+                    cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctName + "'";
+                    comando = new SqlCommand(cadena, conexion);
+                    comando.ExecuteNonQuery();
 
                 }
+                else
+                {
+                        Console.WriteLine("Introduce correct surname.");
+                        string correctSurname = Console.ReadLine();
 
-                conexion.Open();
+                        conexion.Open();
 
-                cadena = "UPDATE LIBRERIA SET EJEMPLARES = 15 WHERE TEMA LIKE'MECANICA'";
-                comando = new SqlCommand(cadena, conexion);
-                comando.ExecuteNonQuery();
+                        cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctSurname + "'";
+                        comando = new SqlCommand(cadena, conexion);
+                        comando.ExecuteNonQuery();
+                }
+
+               
             } 
             else
             {
