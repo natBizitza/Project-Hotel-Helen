@@ -155,6 +155,7 @@ namespace HotelHelen
             string DNI;
             int roomNum;
             bool IsRegistered;
+            DateTime thisDay = DateTime.Today;
 
             do
             {
@@ -184,6 +185,13 @@ namespace HotelHelen
             conexion.Open();
 
             cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE  '" + roomNum + "', O ";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+
+            conexion.Close();
+            conexion.Open();
+
+            cadena = "INSERT INTO RESERVA (CodHabitacion, FechaIn) VALUES ('" + roomNum + "','" + thisDay + "')";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
