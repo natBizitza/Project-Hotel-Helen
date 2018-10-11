@@ -47,10 +47,10 @@ namespace HotelHelen
                             EditClient();
                             break;
                         case CHECKIN:
-                            CheckIn(DateTime);
+                            CheckIn();
                             break;
                         case CHECKOUT:
-                            CheckOut(DateTime);
+                            CheckOut();
                             break;
                     }
 
@@ -83,70 +83,133 @@ namespace HotelHelen
         {
             string DNI, nameClient, surnameClient, answer;
             conexion.Open();
+            bool IsRegistered;
 
-            Console.WriteLine("Introduce client´s DNI, please.");
-            DNI = Console.ReadLine();
-            cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
-            comando = new SqlCommand(cadena, conexion);
-            SqlDataReader registros = comando.ExecuteReader();
-
-            if (registros.Read())
+            do
             {
-                do
-                {
-                    Console.WriteLine("Existe el registro");
-                    answer = Console.ReadLine();
-                } while (answer.ToLower() != "n" || answer.ToLower() != "s");
+                Console.WriteLine("Introduce client´s DNI, please.");
+                DNI = Console.ReadLine();
+                conexion.Open();
+                cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
+                comando = new SqlCommand(cadena, conexion);
+                SqlDataReader registros = comando.ExecuteReader();
+                IsRegistered = registros.Read();
+                conexion.Close();
+            } while (!IsRegistered);
 
+            //to check if it´s our client or not
 
-                if (answer.ToLower() == "n")
-                {
-                    Console.WriteLine("Introduce correct name.");
-                    string correctName = Console.ReadLine();
+            do
+            {
+                Console.WriteLine("Existe el registro");
+                answer = Console.ReadLine();
+            } while (answer.ToLower() != "n" || answer.ToLower() != "s");
 
-                    conexion.Open();
+            // if yes, what we want to change 
+            if (answer.ToLower() == "n")
+            {
+                Console.WriteLine("Introduce correct name.");
+                string correctName = Console.ReadLine();
 
-                    cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctName + "'";
-                    comando = new SqlCommand(cadena, conexion);
-                    comando.ExecuteNonQuery();
+                conexion.Open();
 
-                }
-                else
-                {
-                        Console.WriteLine("Introduce correct surname.");
-                        string correctSurname = Console.ReadLine();
-
-                        conexion.Open();
-
-                        cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctSurname + "'";
-                        comando = new SqlCommand(cadena, conexion);
-                        comando.ExecuteNonQuery();
-                }
-
-               
-            } 
+                cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctName + "'";
+                comando = new SqlCommand(cadena, conexion);
+                comando.ExecuteNonQuery();
+            }
             else
             {
-                Console.WriteLine("El registro no existe");
+                Console.WriteLine("Introduce correct surname.");
+                string correctSurname = Console.ReadLine();
+
+                conexion.Open();
+
+                cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctSurname + "'";
+                comando = new SqlCommand(cadena, conexion);
+                comando.ExecuteNonQuery();
             }
 
             Console.ReadLine();
             conexion.Close();
+        }
+        //    Console.WriteLine("What data would you like to edit name or surname (N/S)?");
 
-            Console.WriteLine("What data would you like to edit name or surname (N/S)?");
-
-            answer = Console.ReadLine();
-            if (answer.ToLower() == "n" )
-            {
+        //    answer = Console.ReadLine();
+        //    if (answer.ToLower() == "n" )
+        //    {
                 
-            }
+        //    }
+
+        //    conexion.Open();
+
+        //    cadena = "UPDATE CLIENTE SET NOMBRE WHERE DNI LIKE  '" + DNI + "','" + correctSurname + "'";
+        //    comando = new SqlCommand(cadena, conexion);
+        //    comando.ExecuteNonQuery();
+
+        //    conexion.Close();
+        //}
+
+        public static void CheckIn()
+        {
+
+            string DNI;
+            int roomNum;
+            bool IsRegistered;
+
+            do
+            {
+                Console.WriteLine("Introduce client´s DNI, please.");
+                DNI = Console.ReadLine();
+                conexion.Open();
+                cadena = "SELECT *from CLIENTE where DNI LIKE '" + DNI + "'";
+                comando = new SqlCommand(cadena, conexion);
+                SqlDataReader registros = comando.ExecuteReader();
+                IsRegistered = registros.Read();
+                conexion.Close();
+            } while (!IsRegistered);
+
+            Console.WriteLine("Please, choose a number of a room.");
 
             conexion.Open();
 
-            cadena = "UPDATE LIBRERIA SET EJEMPLARES = 15 WHERE TEMA LIKE'MECANICA'";
+            cadena = "SELECT CodHabitacion WHERE OCUPACION LIKE L ";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
-        }
+            Console.ReadLine();
+            conexion.Close();
 
+            Console.WriteLine("Please, choose a room.");
+            roomNum = Convert.ToInt32(Console.ReadLine());
+
+            conexion.Open();
+
+            cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE  '" + roomNum + "', O ";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+
+            conexion.Close();
+
+        }
+        public static void CheckOut()
+        {
+
+            //string DNI, nameClient, surnameClient;
+
+            //Console.WriteLine("Welcome to Hotel Helen! Please, introduce your data. Enter your DNI.");
+            //DNI = Console.ReadLine();
+            //Console.WriteLine("Enter your Name.");
+            //nameClient = Console.ReadLine();
+            //Console.WriteLine("Enter yout surname.");
+            //surnameClient = Console.ReadLine();
+
+            //conexion.Open();
+
+            //cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE  '" + roomNum + "', O ";
+            //comando = new SqlCommand(cadena, conexion);
+            //comando.ExecuteNonQuery();
+
+            //conexion.Close();
+
+        }
     }
 }
