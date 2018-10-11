@@ -18,7 +18,7 @@ namespace HotelHelen
         static void Main(string[] args)
         {
 
-           
+            menu();
            
         }
         public static void menu () {
