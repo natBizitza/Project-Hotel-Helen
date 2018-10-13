@@ -207,7 +207,8 @@ namespace HotelHelen
 
             conexion.Open();
             // CHANGE THE CODE BELOW
-            cadena = "INSERT INTO RESERVA (CodReserva, CodHabitacion, FechaIn) VALUES ("+codeOfReservation+",'" + roomNum + ",'" + thisDay + "')";
+            cadena = "INSERT INTO RESERVA (CodReserva, CodHabitacion, FechaIn) VALUES ('"+codeOfReservation+"','" + roomNum + "','" + thisDay + "')";
+            //cadena = "UPDATE CLIENT SET Nombre='" + correctName + "' WHERE DNI LIKE  '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
