@@ -158,7 +158,7 @@ namespace HotelHelen
         {
 
             string DNI;
-            int roomNum;
+            int roomNum, codeOfReservation;
             bool IsRegistered;
             DateTime thisDay = DateTime.Today;
             SqlDataReader registros;
@@ -180,7 +180,7 @@ namespace HotelHelen
 
             cadena = "SELECT CodHabitacion FROM HABITACION WHERE Ocupacion LIKE 'L'";
             comando = new SqlCommand(cadena, conexion);
-             registros = comando.ExecuteReader();
+            registros = comando.ExecuteReader();
 
             // to show the available rooms
             while (registros.Read())
@@ -191,20 +191,23 @@ namespace HotelHelen
             //Console.ReadLine();
             conexion.Close();
 
+            // Choose a room only from the list ADD HERE
             Console.WriteLine("Please, choose a room.");
             roomNum = Convert.ToInt32(Console.ReadLine());
+            // roomNum = codeOfReservation
+            codeOfReservation = roomNum;
 
             conexion.Open();
 
-            cadena = "UPDATE HABITACION SET Ocupacion = 'O' where CodHabitacion= " + roomNum;
+            cadena = "UPDATE HABITACION SET Ocupacion = 'O' where CodHabitacion= '" + roomNum+"'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
             conexion.Close();
 
             conexion.Open();
-            // CHANGE THE CODE ABOVE
-            cadena = "INSERT INTO RESERVA (CodHabitacion, FechaIn) VALUES (" + roomNum + ",'" + thisDay + "')";
+            // CHANGE THE CODE BELOW
+            cadena = "INSERT INTO RESERVA (CodReserva, CodHabitacion, FechaIn) VALUES ("+codeOfReservation+",'" + roomNum + ",'" + thisDay + "')";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
