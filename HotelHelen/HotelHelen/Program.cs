@@ -24,7 +24,7 @@ namespace HotelHelen
         public static void menu () {
             const int REGISTER = 1, EDIT = 2, CHECKIN = 3, CHECKOUT = 4, EXIT = 5;
             int num;
-            string nameClient, surnameClient;
+
             do
             {
                 Console.WriteLine("WELCOME to MENU.Please,choose one option.");
@@ -53,7 +53,7 @@ namespace HotelHelen
                     }
 
             } while (num != 5);
-            Console.WriteLine("You are out of MENU. See you next time.");
+            Console.WriteLine("You are out of the MENU. See you next time.");
             Console.ReadLine();
         }
 
@@ -61,11 +61,11 @@ namespace HotelHelen
 
             string DNI, nameClient, surnameClient;
 
-            Console.WriteLine("Welcome to Hotel Helen! Please, introduce your data. Enter your DNI.");
+            Console.WriteLine("Welcome to Hotel Helen! Please, introduce client's data. Enter DNI.");
             DNI = Console.ReadLine();
-            Console.WriteLine("Enter your Name.");
+            Console.WriteLine("Enter client´s Name.");
             nameClient = Console.ReadLine();
-            Console.WriteLine("Enter yout surname.");
+            Console.WriteLine("Enter client´s surname.");
             surnameClient = Console.ReadLine();
 
             conexion.Open();
@@ -80,7 +80,7 @@ namespace HotelHelen
 
         public static void EditClient()
         {
-            string DNI, nameClient, surnameClient, answer;
+            string DNI, answer;
          
             bool IsRegistered=false;
 
@@ -93,10 +93,6 @@ namespace HotelHelen
                 comando = new SqlCommand(cadena, conexion);
                 SqlDataReader registros = comando.ExecuteReader();
                 IsRegistered = registros.Read();
-                //if (registros.Read())
-                //{
-                //    IsRegistered = true;
-                //}
                 conexion.Close();
                 registros.Close();
             } while (!IsRegistered);
@@ -128,7 +124,7 @@ namespace HotelHelen
 
                 conexion.Open();
 
-                cadena = "UPDATE CLIENT SET Nombre='" + correctSurname + "' WHERE DNI LIKE  '" + DNI + "'";
+                cadena = "UPDATE CLIENT SET Apellido='" + correctSurname + "' WHERE DNI LIKE  '" + DNI + "'";
                 comando = new SqlCommand(cadena, conexion);
                 comando.ExecuteNonQuery();
             }
@@ -143,8 +139,8 @@ namespace HotelHelen
             string DNI;
             int roomNum, codeOfReservation;
             bool IsRegistered;
-            //add hours and mins
-            DateTime thisDay = DateTime.Today;
+
+            DateTime thisDay = DateTime.Now;
             SqlDataReader registros;
             do
             {
@@ -178,13 +174,11 @@ namespace HotelHelen
             // Choose a room only from the list ADD HERE
             Console.WriteLine("Please, choose a room.");
             roomNum = Convert.ToInt32(Console.ReadLine());
-            // roomNum = codeOfReservation
             codeOfReservation = roomNum;
 
             conexion.Open();
 
             cadena = "UPDATE HABITACION SET Ocupacion = 'O' where CodHabitacion= '" + roomNum+"'";
-            //cadena = "UPDATE RESERVA SET DNI LIKE '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
@@ -192,7 +186,6 @@ namespace HotelHelen
 
             conexion.Open();
             cadena = "INSERT INTO RESERVA (CodReserva, DNI, CodHabitacion, FechaIn) VALUES ('"+ codeOfReservation + "','" + DNI + "','" + roomNum + "','" + thisDay + "')";
-            //cadena = "UPDATE CLIENT SET Nombre='" + correctName + "' WHERE DNI LIKE  '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
@@ -201,7 +194,7 @@ namespace HotelHelen
         }
         public static void CheckOut()
         {
-            DateTime thisDay = DateTime.Today;
+            DateTime thisDay = DateTime.Now;
             SqlDataReader registros;
             int roomNum;
 
@@ -223,16 +216,11 @@ namespace HotelHelen
             Console.WriteLine();
             conexion.Close();
 
-            Console.WriteLine("Please, confirm the room number(Type the number)");
+            Console.WriteLine("Please, confirm the room number (Type the number if it's correct)");
             roomNum =Convert.ToInt32(Console.ReadLine());
 
-
-            //int roomNum = Convert.ToInt32(Console.ReadLine());
-
             conexion.Open();
-            // CHANGE. WE need to get the Codhabitacion here too in order to change the status of the room on L
             cadena = "UPDATE HABITACION SET Ocupacion = 'L' where CodHabitacion= '" + roomNum+ "'";
-            //cadena = "UPDATE RESERVA SET FechaOut LIKE  '" + thisDay + "' WHERE DNI LIKE  '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
