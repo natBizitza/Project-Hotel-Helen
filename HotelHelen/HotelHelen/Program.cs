@@ -200,13 +200,13 @@ namespace HotelHelen
             conexion.Open();
 
             cadena = "UPDATE HABITACION SET Ocupacion = 'O' where CodHabitacion= '" + roomNum+"'";
+            cadena = "UPDATE RESERVA SET DNI = '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
             conexion.Close();
 
             conexion.Open();
-            // CHANGE THE CODE BELOW
             cadena = "INSERT INTO RESERVA (CodReserva, CodHabitacion, FechaIn) VALUES ('"+codeOfReservation+"','" + roomNum + "','" + thisDay + "')";
             //cadena = "UPDATE CLIENT SET Nombre='" + correctName + "' WHERE DNI LIKE  '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
@@ -228,14 +228,18 @@ namespace HotelHelen
             conexion.Close();
 
             conexion.Open();
-
-            cadena = "UPDATE RESERVA SET OCUPACION WHERE FechaOut LIKE  '" + thisDay + "'";
-            cadena = "UPDATE HABITACION SET OCUPACION WHERE CodHabitacion LIKE L ";
+            // CHANGE THE CODE BELOW
+            cadena = "UPDATE RESERVA SET FechaOut LIKE  '" + thisDay + "' WHERE DNI LIKE  '" + DNI + "'";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
 
             conexion.Close();
 
+            conexion.Open();
+            cadena = "INSERT INTO HABITACION VALUES  Ocupacion = 'L'";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
         }
     }
 }
