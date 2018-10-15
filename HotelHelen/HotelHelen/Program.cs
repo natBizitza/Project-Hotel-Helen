@@ -22,7 +22,8 @@ namespace HotelHelen
            
         }
         public static void menu () {
-            const int REGISTER = 1, EDIT = 2, CHECKIN = 3, CHECKOUT = 4, AVAILABLEROOMS = 5, EXIT = 6;
+            const int REGISTER = 1, EDIT = 2, CHECKIN = 3, CHECKOUT = 4, AVAILABLEROOMS = 5, 
+           BOOKEDROOMS = 6, EXIT = 7;
             int num;
 
             do
@@ -33,11 +34,12 @@ namespace HotelHelen
                 Console.WriteLine("3 - Check-in.");
                 Console.WriteLine("4 - Check-out.");
                 Console.WriteLine("5 - To show availbale rooms.");
-                Console.WriteLine("6 - Exit.");
+                Console.WriteLine("6 - To show booked rooms and their guests.");
+                Console.WriteLine("7 - Exit.");
 
 
                 num = Convert.ToInt32(Console.ReadLine());
-                if (num == 1 || num == 2 || num == 3 || num == 4|| num == 5)
+                if (num == 1 || num == 2 || num == 3 || num == 4|| num == 5 || num== 6)
                     switch (num)
                     {
                         case REGISTER:
@@ -55,9 +57,12 @@ namespace HotelHelen
                         case AVAILABLEROOMS:
                             AvailableRooms();
                             break;
+                        case BOOKEDROOMS:
+                            ShowBookedRoomsAndGuests();
+                            break;
                     }
 
-            } while (num != 6);
+            } while (num != 7);
             Console.WriteLine("You are out of the MENU. See you next time.");
             Console.ReadLine();
         }
@@ -263,5 +268,31 @@ namespace HotelHelen
             Console.ReadLine();
             conexion.Close();
         }
+        public static void ShowBookedRoomsAndGuests()
+        {
+            SqlDataReader registros;
+
+            Console.WriteLine("List of the booked rooms and their guests.");
+            //Console.ReadLine();
+
+            conexion.Open();
+
+            cadena = "SELECT CodHabitacion, Nombre, Apellido FROM RESERVA";
+            comando = new SqlCommand(cadena, conexion);
+            registros = comando.ExecuteReader();
+
+            // to show the available rooms
+            while (registros.Read())
+            {
+                Console.Write(registros["CodHabitacion"].ToString());
+                Console.Write(registros["Nombre"].ToString());
+                Console.Write(registros["Apellido"].ToString());
+                Console.WriteLine();
+            }
+            Console.ReadLine();
+            conexion.Close();
+
+        }
+
     }
 }
